@@ -1,0 +1,5 @@
+wallabag:
+  install_dir: /var/www/wallabag
+  user: www-data
+  archive: https://github.com/wallabag/wallabag/releases/download/2.3.8/wallabag-release-2.3.8.tar.gz
+  archive_hash: sha256=58f319ee41828fcc4fd00a14c4ac7c16b2179a47af21e257a15938311d1426eb

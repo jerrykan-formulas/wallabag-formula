@@ -1,0 +1,52 @@
+{%- set config = salt['pillar.get']('wallabag:config', {}) -%}
+
+{%- set secret = config.get('secret', salt['grains.get_or_set_hash'](
+    'wallabag:secret',
+    length=30,
+    chars=('abcdefghijklmnopqrstuvwxyz' +
+           'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+           '12345678790')
+)) -%}
+
+{%- set default_db_charset = {
+    'pdo_pgsql': 'null',
+    'pdo_mysql': 'utf8mb4',
+    'pdo_sqlite': 'null',
+}[config['database_driver']] -%}
+
+parameters:
+    database_driver: {{ config['database_driver'] }}
+    database_driver_class: {{ config.get('database_driver_class', 'null') }}
+    database_host: {{ config.get('database_host', '127.0.0.1') }}
+    database_port: {{ config.get('database_port', 'null') }}
+    database_name: {{ config.get('database_name', 'wallabag') }}
+    database_user: {{ config.get('database_user', 'wallabag') }}
+    database_password: {{ config['database_password'] }}
+    database_path: {{ config.get('database_path', 'null') }}
+    database_table_prefix: {{ config.get('database_table_prefix', 'wallabag_') }}
+    database_socket: {{ config.get('database_socket', 'null') }}
+    database_charset: {{ config.get('database_charset', default_db_charset) }}
+    domain_name: {{ config['domain_name'] }}
+    mailer_transport: {{ config.get('mailer_transport', 'smtp') }}
+    mailer_host: {{ config.get('mailer_host', '127.0.0.1') }}
+    mailer_user: {{ config.get('mailer_user', 'null') }}
+    mailer_password: {{ config.get('mailer_password', 'null') }}
+    locale: {{ config.get('locale', 'en') }}
+    secret: {{ secret }}
+{#- twofactor_auth: true #}
+    twofactor_auth: false
+    twofactor_sender: {{ config.get('twofactor_sender', 'no-reply@wallabag.org') }}
+    fosuser_registration: true
+    fosuser_confirmation: true
+    from_email: {{ config.get('from_email', 'no-reply@wallabag.org') }}
+    rss_limit: {{ config.get('rss_limit', 50) }}
+    rabbitmq_host: {{ config.get('rabbitmq_host', 'localhost') }}
+    rabbitmq_port: {{ config.get('rabbitmq_port', 5672) }}
+    rabbitmq_user: {{ config.get('rabbitmq_user', 'guest') }}
+    rabbitmq_password: {{ config.get('rabbitmq_password', 'guest') }}
+    rabbitmq_prefetch_count: {{ config.get('rabbitmq_prefetch_count', 10) }}
+    redis_scheme: {{ config.get('redis_scheme', 'tcp') }}
+    redis_host: {{ config.get('redis_host', 'localhost') }}
+    redis_port: {{ config.get('redis_port', 6379) }}
+    redis_path: {{ config.get('redis_path', 'null') }}
+    redis_password: {{ config.get('redis_password', 'null') }}

@@ -1,0 +1,16 @@
+wallabag:
+  lookup:
+    # install in a custom location (default: /var/www/wallabg)
+    install_dir: /opt/wallabag
+
+  config:
+    # database type to use pdo_mysql/pdo_pgsql/pdo_sqlite
+    database_driver: pdo_pgsql
+    # database user
+    database_user: wallabag
+    # database name
+    database_name: wallabag
+    # database password
+    database_password: wallabagdbpass
+    # full URL of the wallabag installation
+    domain_name: http://wallabag.example.com/

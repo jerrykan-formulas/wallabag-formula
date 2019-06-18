@@ -1,0 +1,24 @@
+{%- import_yaml "wallabag/defaults.yaml" as defaults -%}
+
+{%- set distro_release = salt['grains.get']('osmajorrelease')|string -%}
+
+{%- set wallabag = salt['grains.filter_by']({
+    'Debian': {
+        'php_modules': {
+            '9': ['composer', 'php-bcmath', 'php-curl', 'php-gd', 'php-json', 'php-mbstring', 'php-tidy', 'php-xml',],
+        }[distro_release],
+        'pkg_mysql': {
+            '9': 'php-mysql',
+        }[distro_release],
+        'pkg_postgresql': {
+            '9': 'php-pgsql',
+        }[distro_release],
+        'pkg_sqlite': {
+            '9': 'php-sqlite3',
+        }[distro_release],
+    },
+}, grain='os_family',
+   merge=salt['pillar.get']('wallabag:lookup',
+                            defaults.wallabag,
+                            merge=True)
+) -%}
