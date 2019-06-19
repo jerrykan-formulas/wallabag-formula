@@ -50,10 +50,18 @@ wallabag-config:
     - require:
       - file: wallabag-dir
 
+wallabag-clear-cache:
+  cmd.run:
+    - name: rm -rf {{ wallabag.install_dir }}/var/cache
+    - cwd: {{ wallabag.install_dir }}
+    - user: {{ wallabag.user }}
+    - onchanges:
+      - file: wallabag-config
+
 wallabag-config-update:
   cmd.run:
     - name: /usr/bin/php {{ wallabag.install_dir }}/bin/console wallabag:install --no-interaction --env=prod
     - cwd: {{ wallabag.install_dir }}
     - user: {{ wallabag.user }}
     - onchanges:
-      - file: wallabag-config
+      - cmd: wallabag-clear-cache
