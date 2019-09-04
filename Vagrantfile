@@ -96,10 +96,12 @@ cat <<EOF > /etc/apache2/sites-available/000-default.conf
         RewriteRule ^(.*)$ app.php [QSA,L]
     </Directory>
 
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
+    ErrorLog \\${APACHE_LOG_DIR}/error.log
+    CustomLog \\${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 EOF
+
+a2enmod rewrite
 systemctl reload apache2.service
 
 # Configure Minion
