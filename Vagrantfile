@@ -43,17 +43,21 @@ OS_CODENAME="$(. /etc/os-release; echo $VERSION | sed s/[^a-z]//g)"
 APT_REPO_FILE="/etc/apt/sources.list.d/saltstack.list"
 APT_REPO="deb http://repo.saltstack.com/apt/debian/$OS_VERSION/amd64/latest $OS_CODENAME main"
 
-# Add the saltstack repostory
-echo "$APT_REPO" > $APT_REPO_FILE
+if [[ $OS_VERSION -lt 10 ]]; then
+    # Add the saltstack repostory
+    echo "$APT_REPO" > $APT_REPO_FILE
 
-# Trust the saltstack repository signing key
-echo "$PUBLIC_KEY" | apt-key add -
+    # Trust the saltstack repository signing key
+    echo "$PUBLIC_KEY" | apt-key add -
+fi
 
 # Install salt minion and packages for testing wallabag
 if [[ $OS_VERSION -eq 8 ]]; then
     LIBAPACHE_MOD_PHP="libapache2-mod-php5"
+elif [[ $OS_VERSION -eq 9 ]]; then
+    LIBAPACHE_MOD_PHP="libapache2-mod-php7.0"
 else
-    LIBAPACHE_MOD_PHP="libapache2-mod-php"
+    LIBAPACHE_MOD_PHP="libapache2-mod-php7.3"
 fi
 
 apt-get update
@@ -125,7 +129,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.define "wallabag", primary: true do |host|
-        host.vm.box = 'debian/contrib-stretch64'
+        host.vm.box = 'debian/contrib-buster64'
         host.vm.host_name = 'wallabag.salt.example.com'
         host.vm.network :private_network, type: "dhcp"
         host.vm.synced_folder "./", "/srv/salt"

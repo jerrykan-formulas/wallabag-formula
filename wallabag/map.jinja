@@ -7,18 +7,22 @@
         'php_modules': {
             '8': ['php5-curl', 'php5-gd', 'php5-json', 'php5-tidy'],
             '9': ['php-bcmath', 'php-curl', 'php-gd', 'php-json', 'php-mbstring', 'php-tidy', 'php-xml'],
+            '10': ['php-bcmath', 'php-curl', 'php-gd', 'php-json', 'php-mbstring', 'php-tidy', 'php-xml'],
         }[distro_release],
         'pkg_mysql': {
             '8': 'php5-mysql',
             '9': 'php-mysql',
+            '10': 'php-mysql',
         }[distro_release],
         'pkg_postgresql': {
             '8': 'php5-pgsql',
             '9': 'php-pgsql',
+            '10': 'php-pgsql',
         }[distro_release],
         'pkg_sqlite': {
             '8': 'php5-sqlite',
             '9': 'php-sqlite3',
+            '10': 'php-sqlite3',
         }[distro_release],
     },
 }, grain='os_family',
