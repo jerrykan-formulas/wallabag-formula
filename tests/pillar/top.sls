@@ -4,4 +4,5 @@ base:
 
   # used when developing the formula
   'not test_*':
+    - vagrant
     - default
